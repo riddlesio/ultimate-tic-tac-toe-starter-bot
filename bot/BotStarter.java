@@ -39,9 +39,12 @@ public class BotStarter {
 	public Move makeTurn(Field field) {
 		Random r = new Random();
 		ArrayList<Move> moves = field.getAvailableMoves();
-		Move move = moves.get(r.nextInt(moves.size())); /* get random move from available moves */
+		if (moves.size() > 0) {
+			Move move = moves.get(r.nextInt(moves.size())); /* get random move from available moves */
+			return move;
+		}
+		return null;
 		
-		return move;
 	}
 
 

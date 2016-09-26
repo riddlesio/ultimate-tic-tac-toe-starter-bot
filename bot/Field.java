@@ -35,8 +35,8 @@ public class Field {
 	private int[][] mBoard;
 	private int[][] mMacroboard;
 	
-    public static final int EMPTY_FIELD = -1;
-    public static final int AVAILABLE_FIELD = -2;
+    public static final int EMPTY_FIELD = 0;
+    public static final int AVAILABLE_FIELD = -1;
 
 	private final int COLS = 9, ROWS = 9;
 	private String mLastError = "";
@@ -69,7 +69,6 @@ public class Field {
 	 * @param String : 
 	 */
 	public void parseFromString(String s) {
-	    System.err.println("Move " + mMoveNr);
 		s = s.replace(";", ",");
 		String[] r = s.split(",");
 		int counter = 0;
