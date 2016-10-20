@@ -1,23 +1,27 @@
-// // Copyright 2016 theaigames.com (developers@theaigames.com)
+/*
+ *  Copyright 2016 riddles.io (developers@riddles.io)
+ *
+ *      Licensed under the Apache License, Version 2.0 (the "License");
+ *      you may not use this file except in compliance with the License.
+ *      You may obtain a copy of the License at
+ *
+ *          http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *      Unless required by applicable law or agreed to in writing, software
+ *      distributed under the License is distributed on an "AS IS" BASIS,
+ *      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *      See the License for the specific language governing permissions and
+ *      limitations under the License.
+ *
+ *      For the full copyright and license information, please view the LICENSE
+ *      file that was distributed with this source code.
+ */
 
-//    Licensed under the Apache License, Version 2.0 (the "License");
-//    you may not use this file except in compliance with the License.
-//    You may obtain a copy of the License at
-
-//        http://www.apache.org/licenses/LICENSE-2.0
-
-//    Unless required by applicable law or agreed to in writing, software
-//    distributed under the License is distributed on an "AS IS" BASIS,
-//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//    See the License for the specific language governing permissions and
-//    limitations under the License.
-//  
-//    For the full copyright and license information, please view the LICENSE
-//    file that was distributed with this source code.
-
-package bot;
+package field;
 
 import java.util.ArrayList;
+
+import move.Move;
 
 /**
  * Field class
@@ -26,20 +30,19 @@ import java.util.ArrayList;
  * as storing the current state and performing calculations
  * on the field.
  * 
- * @author Jim van Eeden <jim@starapple.nl>, Joost de Meij <joost@starapple.nl>
+ * @author Jim van Eeden - jim@riddles.io, Joost de Meij - joost@riddles.io
  */
 
 public class Field {
-    private int mRoundNr;
-    private int mMoveNr;
+    private static final int EMPTY_FIELD = 0;
+    private static final int AVAILABLE_FIELD = -1;
+    private final int COLS = 9;
+    private final int ROWS = 9;
+
 	private int[][] mBoard;
 	private int[][] mMacroboard;
-	
-    public static final int EMPTY_FIELD = 0;
-    public static final int AVAILABLE_FIELD = -1;
-
-	private final int COLS = 9, ROWS = 9;
-	private String mLastError = "";
+    private int myId;
+    private int opponentId;
 	
 	public Field() {
 		mBoard = new int[COLS][ROWS];
@@ -48,25 +51,8 @@ public class Field {
 	}
 	
 	/**
-	 * Parse data about the game given by the engine
-	 * @param key : type of data given
-	 * @param value : value
-	 */
-	public void parseGameData(String key, String value) {
-	    if (key.equals("round")) {
-	        mRoundNr = Integer.parseInt(value);
-	    } else if (key.equals("move")) {
-	        mMoveNr = Integer.parseInt(value);
-	    } else if (key.equals("field")) {
-            parseFromString(value); /* Parse Field with data */
-        } else if (key.equals("macroboard")) {
-            parseMacroboardFromString(value); /* Parse macroboard with data */
-        }
-	}
-	
-	/**
 	 * Initialise field from comma separated String
-	 * @param String : 
+	 * @param s input String
 	 */
 	public void parseFromString(String s) {
 		s = s.replace(";", ",");
@@ -82,7 +68,7 @@ public class Field {
 	
 	/**
 	 * Initialise macroboard from comma separated String
-	 * @param String : 
+	 * @param s input String
 	 */
 	public void parseMacroboardFromString(String s) {
 		String[] r = s.split(",");
@@ -118,25 +104,15 @@ public class Field {
 	}
 	
 	public Boolean isInActiveMicroboard(int x, int y) {
-	    return mMacroboard[(int) x/3][(int) y/3] == AVAILABLE_FIELD;
-	}
-	
-	/**
-	 * Returns reason why addMove returns false
-	 * @param args : 
-	 * @return : reason why addMove returns false
-	 */
-	public String getLastError() {
-		return mLastError;
+	    return mMacroboard[x/3][y/3] == AVAILABLE_FIELD;
 	}
 
-	
-	@Override
+
 	/**
 	 * Creates comma separated String with player ids for the microboards.
-	 * @param args : 
 	 * @return : String with player names for every cell, or 'empty' when cell is empty.
 	 */
+	@Override
 	public String toString() {
 		String r = "";
 		int counter = 0;
@@ -154,8 +130,7 @@ public class Field {
 	
 	/**
 	 * Checks whether the field is full
-	 * @param args : 
-	 * @return : Returns true when field is full, otherwise returns false.
+	 * @return Returns true when field is full, otherwise returns false.
 	 */
 	public boolean isFull() {
 		for (int x = 0; x < COLS; x++)
@@ -187,10 +162,27 @@ public class Field {
 	
 	/**
 	 * Returns the player id on given column and row
-	 * @param args : int column, int row
-	 * @return : int
+	 * @param column Column
+     * @param row Row
+	 * @return int
 	 */
 	public int getPlayerId(int column, int row) {
 		return mBoard[column][row];
 	}
+
+    public int getMyId() {
+        return this.myId;
+    }
+
+    public void setMyId(int myId) {
+        this.myId = myId;
+    }
+
+    public int getOpponentId() {
+        return this.opponentId;
+    }
+
+    public void setOpponentId(int opponentId) {
+        this.opponentId = opponentId;
+    }
 }
