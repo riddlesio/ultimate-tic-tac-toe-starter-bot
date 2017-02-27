@@ -34,19 +34,19 @@ import move.Move;
  */
 
 public class Field {
-    private static final int EMPTY_FIELD = 0;
-    private static final int AVAILABLE_FIELD = -1;
+    public static final String EMPTY_FIELD = ".";
+    public static final String AVAILABLE_FIELD = "-1";
     private final int COLS = 9;
     private final int ROWS = 9;
 
-	private int[][] mBoard;
-	private int[][] mMacroboard;
+	private String[][] mBoard;
+	private String[][] mMacroboard;
     private int myId;
     private int opponentId;
 	
 	public Field() {
-		mBoard = new int[COLS][ROWS];
-		mMacroboard = new int[COLS / 3][ROWS / 3];
+		mBoard = new String[COLS][ROWS];
+		mMacroboard = new String[COLS / 3][ROWS / 3];
 		clearBoard();
 	}
 	
@@ -60,7 +60,7 @@ public class Field {
 		int counter = 0;
 		for (int y = 0; y < ROWS; y++) {
 			for (int x = 0; x < COLS; x++) {
-				mBoard[x][y] = Integer.parseInt(r[counter]); 
+				mBoard[x][y] = r[counter]; 
 				counter++;
 			}
 		}
@@ -75,7 +75,7 @@ public class Field {
 		int counter = 0;
 		for (int y = 0; y < 3; y++) {
 			for (int x = 0; x < 3; x++) {
-				mMacroboard[x][y] = Integer.parseInt(r[counter]);
+				mMacroboard[x][y] = r[counter];
 				counter++;
 			}
 		}
@@ -84,7 +84,7 @@ public class Field {
 	public void clearBoard() {
 		for (int x = 0; x < COLS; x++) {
 			for (int y = 0; y < ROWS; y++) {
-				mBoard[x][y] = 0;
+				mBoard[x][y] = EMPTY_FIELD;
 			}
 		}
 	}
@@ -94,8 +94,8 @@ public class Field {
 		
 		for (int y = 0; y < ROWS; y++) {
             for (int x = 0; x < COLS; x++) {
-                if (isInActiveMicroboard(x, y) && mBoard[x][y] == EMPTY_FIELD) {
-                    moves.add(new Move(x, y));
+                if (isInActiveMicroboard(x, y) && mBoard[x][y].equals(EMPTY_FIELD)) {
+                	moves.add(new Move(x, y));
                 }
             }
         }
@@ -104,7 +104,7 @@ public class Field {
 	}
 	
 	public Boolean isInActiveMicroboard(int x, int y) {
-	    return mMacroboard[x/3][y/3] == AVAILABLE_FIELD;
+	    return mMacroboard[x/3][y/3].equals(AVAILABLE_FIELD);
 	}
 
 
@@ -135,7 +135,7 @@ public class Field {
 	public boolean isFull() {
 		for (int x = 0; x < COLS; x++)
 		  for (int y = 0; y < ROWS; y++)
-		    if (mBoard[x][y] == EMPTY_FIELD)
+		    if (mBoard[x][y].equals(EMPTY_FIELD))
 		      return false; // At least one cell is not filled
 		// All cells are filled
 		return true;
@@ -152,7 +152,7 @@ public class Field {
 	public boolean isEmpty() {
 		for (int x = 0; x < COLS; x++) {
 			  for (int y = 0; y < ROWS; y++) {
-				  if (mBoard[x][y] > EMPTY_FIELD) {
+				  if (!mBoard[x][y].equals(EMPTY_FIELD)) {
 					  return false;
 				  }
 			  }
@@ -166,7 +166,7 @@ public class Field {
      * @param row Row
 	 * @return int
 	 */
-	public int getPlayerId(int column, int row) {
+	public String getPlayerId(int column, int row) {
 		return mBoard[column][row];
 	}
 
