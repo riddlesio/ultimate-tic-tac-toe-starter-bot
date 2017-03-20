@@ -36,6 +36,7 @@ import player.Player;
 public class BotState {
     private int MAX_TIMEBANK;
     private int TIME_PER_MOVE;
+    private int MAX_ROUNDS;
 
     private int roundNumber;
     private int moveNumber;
@@ -60,6 +61,10 @@ public class BotState {
 
     public void setTimePerMove(int value) {
         this.TIME_PER_MOVE = value;
+    }
+
+    public void setMaxRounds(int value) {
+        this.MAX_ROUNDS = value;
     }
 
     public void setMyName(String myName) {
@@ -104,5 +109,9 @@ public class BotState {
 
     public int getTimePerMove() {
         return this.TIME_PER_MOVE;
+    }
+
+    public int getMaxRounds() {
+        return this.MAX_ROUNDS;
     }
 }

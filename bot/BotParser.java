@@ -88,7 +88,7 @@ public class BotParser {
      */
     private void parseSettings(String key, String value) {
         try {
-            switch(key) {
+            switch (key) {
                 case "timebank":
                     int time = Integer.parseInt(value);
                     this.currentState.setMaxTimebank(time);
@@ -112,6 +112,9 @@ public class BotParser {
                     int opponentId = 2 - myId + 1;
                     this.currentState.getField().setMyId(myId);
                     this.currentState.getField().setOpponentId(opponentId);
+                    break;
+                case "max_rounds":
+                    this.currentState.setMaxRounds(Integer.parseInt(value));
                     break;
                 default:
                     System.err.println(String.format(
