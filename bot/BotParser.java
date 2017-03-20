@@ -113,9 +113,6 @@ public class BotParser {
                     this.currentState.getField().setMyId(myId);
                     this.currentState.getField().setOpponentId(opponentId);
                     break;
-                case "max_rounds":
-                    this.currentState.setMaxRounds(Integer.parseInt(value));
-                    break;
                 default:
                     System.err.println(String.format(
                             "Cannot parse settings input with key '%s'", key));
